@@ -9,6 +9,7 @@ readme = "README.md"
 documentation = "https://docs.rs/bool-logic"
 categories = ["algorithms", "mathematics", "data-structures"]
 keywords = ["boolean", "logic", "expression", "evaluation"]
+rust-version = "1.87"
 
 [lints.rust]
 unsafe_code = "forbid"

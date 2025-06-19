@@ -27,7 +27,9 @@ impl<T> VisitMut<T> for MergeAllOfNotAny {
 
         if let [first, rest @ ..] = not_any_list.as_mut_slice() {
             if rest.is_empty().not() {
-                rest.iter_mut().for_each(|x| first.append(x));
+                for x in rest {
+                    first.append(x);
+                }
                 remove_if(all, Expr::is_empty_not_any);
             }
 
