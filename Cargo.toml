@@ -1,27 +1,21 @@
-[package]
-name = "bool-logic"
-version = "0.3.0"
+[workspace]
+members = ["crates/*"]
+resolver = "3"
+
+[workspace.package]
 edition = "2024"
-description = "A library for manipulating and evaluating boolean expressions"
 license = "MIT"
 repository = "https://github.com/Nugine/bool-logic"
-readme = "README.md"
-documentation = "https://docs.rs/bool-logic"
-categories = ["algorithms", "mathematics", "data-structures"]
-keywords = ["boolean", "logic", "expression", "evaluation"]
 rust-version = "1.87"
 
-[lints.rust]
+[workspace.lints.rust]
 unsafe_code = "forbid"
 
-[lints.clippy]
+[workspace.lints.clippy]
 # deny
 all = { level = "deny", priority = -1 }
 pedantic = { level = "deny", priority = -1 }
 cargo = { level = "deny", priority = -1 }
 
-[package.metadata.docs.rs]
-all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
-
-[dependencies]
+[profile.release]
+debug = "line-tables-only"
