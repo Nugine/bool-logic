@@ -17,3 +17,4 @@ jobs:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
         run: |
           cargo publish -p bool-logic
+          cargo publish -p libc-cfg
