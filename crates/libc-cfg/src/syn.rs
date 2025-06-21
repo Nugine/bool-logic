@@ -244,6 +244,10 @@ impl<'ast> Visit<'ast> for FindMods {
     fn visit_item_mod(&mut self, ast: &'ast syn::ItemMod) {
         debug!("visit_item_mod: {:?}", ast.ident);
 
+        if ast.ident == "tests" {
+            return;
+        }
+
         assert!(ast.content.is_none());
 
         let cfg = find_cfg_in_attrs(&ast.attrs);
@@ -336,7 +340,12 @@ impl<'ast> Visit<'ast> for FindItems<'_> {
             Item::Enum(ast) => push!(self, ast),
             Item::Static(ast) => push!(self, ast),
             //
-            Item::Mod(ast) => assert!(ast.content.is_none()),
+            Item::Mod(ast) => {
+                if ast.ident == "tests" {
+                    return;
+                }
+                assert!(ast.content.is_none(), "{:?}", ast.ident);
+            }
             Item::Macro(ast) => self.visit_item_macro(ast),
             Item::ForeignMod(ast) => self.visit_item_foreign_mod(ast),
             //
