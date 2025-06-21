@@ -1,0 +1,42 @@
+[package]
+name = "libc-cfg"
+version = "0.3.1-dev"
+description = "A codegen tool for extracting libc cfg"
+readme = "README.md"
+documentation = "https://docs.rs/libc-cfg"
+categories = ["development-tools", "os"]
+keywords = ["libc", "cfg", "codegen", "build"]
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[[bin]]
+name = "libc-cfg"
+required-features = ["binary"]
+
+[features]
+binary = ["dep:clap", "dep:env_logger"]
+
+[dependencies.bool-logic]
+version = "0.3.1-dev"
+path = "../bool-logic"
+
+[dependencies]
+anyhow = "1.0.98"
+camino = "1.1.10"
+clap = { version = "4.5.40", features = ["derive"], optional = true }
+env_logger = { version = "0.11.8", optional = true }
+log = "0.4.27"
+proc-macro2 = "1.0.95"
+quote = "1.0.40"
+regex = "1.11.1"
+std-next = "0.1.9"
+syn = { version = "2.0.103", features = ["full", "visit", "visit-mut", "extra-traits"] }

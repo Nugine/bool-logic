@@ -1,6 +1,6 @@
 [package]
 name = "bool-logic"
-version = "0.3.0"
+version = "0.3.1-dev"
 description = "A library for manipulating and evaluating boolean expressions"
 readme = "README.md"
 documentation = "https://docs.rs/bool-logic"
