@@ -1,6 +1,6 @@
 [package]
 name = "libc-cfg"
-version = "0.3.1-dev"
+version = "0.3.1"
 description = "A codegen tool for extracting libc cfg"
 readme = "README.md"
 documentation = "https://docs.rs/libc-cfg"
@@ -26,7 +26,7 @@ required-features = ["binary"]
 binary = ["dep:clap", "dep:env_logger"]
 
 [dependencies.bool-logic]
-version = "0.3.1-dev"
+version = "0.3.1"
 path = "../bool-logic"
 
 [dependencies]
