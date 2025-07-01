@@ -39,4 +39,4 @@ proc-macro2 = "1.0.95"
 quote = "1.0.40"
 regex = "1.11.1"
 std-next = "0.1.9"
-syn = { version = "2.0.103", features = ["full", "visit", "visit-mut", "extra-traits"] }
+syn = { version = "2.0.104", features = ["full", "visit", "visit-mut", "extra-traits"] }
