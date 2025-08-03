@@ -4,6 +4,7 @@ use libc_cfg::search;
 use std::io::Write as _;
 use std::ops::Not;
 
+use anyhow::Context;
 use anyhow::Result;
 use camino::Utf8PathBuf;
 use clap::Parser;
@@ -24,7 +25,7 @@ fn main() -> Result<()> {
     anyhow::ensure!(opt.filters.is_empty().not(), "no filters specified");
 
     let re = RegexSet::new(&opt.filters)?;
-    let ans = search(&opt.libc, &re)?;
+    let ans = search(&opt.libc, &re).with_context(|| "failed to search")?;
 
     let mut stdout = std::io::stdout().lock();
     for CfgItem { cfg, name } in ans {

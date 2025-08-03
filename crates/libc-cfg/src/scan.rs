@@ -16,6 +16,7 @@ use std::ops::Not as _;
 use syn::File;
 use syn::Ident;
 
+use anyhow::Context;
 use anyhow::Result;
 use camino::{Utf8Path, Utf8PathBuf};
 use log::debug;
@@ -29,7 +30,8 @@ pub struct CfgItem {
 }
 
 pub fn search(libc: impl AsRef<Utf8Path>, re: &RegexSet) -> Result<Vec<CfgItem>> {
-    let items = search_items(libc.as_ref(), re)?;
+    let items = search_items(libc.as_ref(), re)
+        .with_context(|| format!("failed to search items: {re:?}"))?;
 
     Ok(map_collect_vec(items, |(cfg, name)| CfgItem {
         cfg,
@@ -87,10 +89,19 @@ fn resolve_fs_path(dir: &Utf8Path, mod_name: &Ident) -> Utf8PathBuf {
 
     if first.exists() {
         assert!(second.exists().not());
-        first
-    } else {
-        second
+        return first;
     }
+
+    // FIXME: special case
+    if dir.as_str().ends_with("new/linux_uapi/linux") && (mod_name == "j1939" || mod_name == "raw")
+    {
+        let mod_path = dir.join(format!("can/{mod_name}.rs"));
+        if mod_path.exists() {
+            return mod_path;
+        }
+    }
+
+    second
 }
 
 struct DfsContext<'a> {
@@ -108,7 +119,7 @@ fn dfs(
 
     let dir = fs_path.parent().unwrap();
 
-    let ast = parse_file(fs_path)?;
+    let ast = parse_file(fs_path).with_context(|| format!("failed to parse file: {fs_path:?}"))?;
 
     for (cfg, name) in find_cfg_items(&ast, ctx.re) {
         let item_cfg = join_item_cfg(mod_cfg, cfg);
