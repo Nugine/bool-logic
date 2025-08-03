@@ -21,5 +21,5 @@ ci:
     just test
 
 sync-version:
-    cargo set-version -p bool-logic "0.3.1"
-    cargo set-version -p libc-cfg   "0.3.1"
+    cargo set-version -p bool-logic "0.3.2"
+    cargo set-version -p libc-cfg   "0.3.2"
