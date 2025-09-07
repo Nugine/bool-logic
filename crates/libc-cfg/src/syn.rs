@@ -408,7 +408,7 @@ impl<'ast> Visit<'ast> for FindItems<'_> {
             syn::ForeignItem::Type(ast) => push!(self, ast),
             syn::ForeignItem::Macro(_) => unimplemented!(),
             syn::ForeignItem::Verbatim(_) => panic!(),
-            _ => panic!(),
+            _ => unimplemented!(),
         }
     }
 }
