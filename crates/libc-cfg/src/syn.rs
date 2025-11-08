@@ -240,15 +240,22 @@ struct FindMods {
     ans: Vec<(CfgExpr, Ident)>,
 }
 
+fn is_skipped_mod(ident: &Ident) -> bool {
+    ident == "tests" || ident == "macro_checks"
+}
+
 impl<'ast> Visit<'ast> for FindMods {
     fn visit_item_mod(&mut self, ast: &'ast syn::ItemMod) {
         debug!("visit_item_mod: {:?}", ast.ident);
 
-        if ast.ident == "tests" {
+        if is_skipped_mod(&ast.ident) {
             return;
         }
 
-        assert!(ast.content.is_none());
+        if ast.content.is_some() {
+            log::debug!("skipping inline mod: {}", ast.ident);
+            return;
+        }
 
         let cfg = find_cfg_in_attrs(&ast.attrs);
         let name = ast.ident.clone();
@@ -341,10 +348,10 @@ impl<'ast> Visit<'ast> for FindItems<'_> {
             Item::Static(ast) => push!(self, ast),
             //
             Item::Mod(ast) => {
-                if ast.ident == "tests" {
+                if is_skipped_mod(&ast.ident) {
                     return;
                 }
-                assert!(ast.content.is_none(), "{:?}", ast.ident);
+                self.visit_item_mod(ast);
             }
             Item::Macro(ast) => self.visit_item_macro(ast),
             Item::ForeignMod(ast) => self.visit_item_foreign_mod(ast),

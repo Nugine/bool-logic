@@ -84,6 +84,8 @@ fn aggregate_items(map: HashMap<Ident, Vec<CfgExpr>>) -> Vec<(CfgExpr, Ident)> {
 }
 
 fn resolve_fs_path(dir: &Utf8Path, mod_name: &Ident) -> Utf8PathBuf {
+    log::debug!("resolving mod `{mod_name}` in dir `{dir}`");
+
     let first = dir.join(format!("{mod_name}.rs"));
     let second = dir.join(format!("{mod_name}/mod.rs"));
 
@@ -93,8 +95,7 @@ fn resolve_fs_path(dir: &Utf8Path, mod_name: &Ident) -> Utf8PathBuf {
     }
 
     // FIXME: special case
-    if dir.as_str().ends_with("new/linux_uapi/linux") && (mod_name == "j1939" || mod_name == "raw")
-    {
+    if dir.as_str().ends_with("new/linux_uapi/linux") {
         let mod_path = dir.join(format!("can/{mod_name}.rs"));
         if mod_path.exists() {
             return mod_path;
