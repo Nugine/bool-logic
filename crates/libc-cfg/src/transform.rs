@@ -252,17 +252,15 @@ impl VisitMut<Pred> for ImplyByKey {
         let mut i = 0;
         while i < all.len() {
             match &all[i] {
-                Expr::Var(Var(pos)) => {
-                    if Self::UNIQUE_VALUED_KEYS.contains(&pos.key.as_str()) {
-                        assert!(pos.value.is_some());
+                Expr::Var(Var(pos)) if Self::UNIQUE_VALUED_KEYS.contains(&pos.key.as_str()) => {
+                    assert!(pos.value.is_some());
 
-                        let pos = pos.clone();
-                        let pos_key = pos.key.as_str();
-                        let pos_any_values = &[pos.value.as_deref().unwrap()];
+                    let pos = pos.clone();
+                    let pos_key = pos.key.as_str();
+                    let pos_any_values = &[pos.value.as_deref().unwrap()];
 
-                        for (_, x) in all.iter_mut().enumerate().filter(|&(j, _)| j != i) {
-                            Self::fix(pos_key, pos_any_values, x);
-                        }
+                    for (_, x) in all.iter_mut().enumerate().filter(|&(j, _)| j != i) {
+                        Self::fix(pos_key, pos_any_values, x);
                     }
                 }
                 Expr::Any(Any(any)) => {
