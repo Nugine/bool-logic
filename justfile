@@ -19,7 +19,3 @@ ci:
     just fmt --check
     just lint -- -D warnings
     just test
-
-sync-version:
-    cargo set-version -p bool-logic "0.3.3"
-    cargo set-version -p libc-cfg   "0.3.3"
